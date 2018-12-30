@@ -1,0 +1,5 @@
+Cześć!
+Jestem klientem.
+To jest moja wiadomość.
+Pozdrowienia!
+end
