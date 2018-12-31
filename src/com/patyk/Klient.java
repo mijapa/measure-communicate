@@ -1,9 +1,8 @@
 package com.patyk;
 
 import static com.patyk.tcp.ClientTCP.wyslijKomunikatFloat;
-import static java.lang.Thread.sleep;
 
-public class Klient {
+public class Klient extends Thread {
     private static Integer nextID = 0;
     private Integer ID;
 
@@ -13,15 +12,7 @@ public class Klient {
 
     public static void main(String[] args) {
         Klient kl = new Klient();
-        while (true) {
-            System.out.println(kl.temperatura());
-            wyslijKomunikatFloat(kl.temperatura(), "localhost");
-            try {
-                sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        kl.run();
     }
 
     private Float temperatura() {
@@ -29,4 +20,16 @@ public class Klient {
         return czujnik.zmierzTemperature();
     }
 
+    @Override
+    public void run() {
+        while (true) {
+            System.out.println(this.temperatura());
+            wyslijKomunikatFloat(this.temperatura(), "localhost");
+            try {
+                sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

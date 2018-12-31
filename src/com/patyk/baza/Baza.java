@@ -9,11 +9,11 @@ public class Baza {
         else
             System.exit(1);
 
-        java.sql.Connection connection = connectToDatabase("localhost:3306", "bank2018", "root", "");
+        java.sql.Connection connection = connectToDatabase("localhost:3306", "IntDom", "root", "");
 
         // WYKONYWANIE OPERACJI NA BAZIE DANYCH
         System.out.println("Pobieranie danych z bazy:");
-        String sql = "select * from klient";
+        String sql = "select * from czujniki";
         Statement s = createStatement(connection);
         ResultSet r = executeQuery(s, sql);
         printDataFromQuery(r);
@@ -72,7 +72,7 @@ public class Baza {
      *            - obiekt przesyłający zapytanie do bazy
      */
     public static void closeConnection(Connection connection, Statement s) {
-        System.out.print("\nZamykanie polaczenia z bazaą:");
+        System.out.print("Zamykanie polaczenia z bazaą:\n");
         try {
             s.close();
             connection.close();
@@ -80,7 +80,7 @@ public class Baza {
             System.out.println("Bląd przy zamykaniu polączenia " + e.toString());
             System.exit(4);
         }
-        System.out.print(" zamknięcie OK");
+        System.out.print(" zamknięcie OK\n");
     }
 
     /**

@@ -5,18 +5,14 @@ package com.patyk.tcp;
  */
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Scanner;
 
 /**
  * @author micha
  *
  */
 public class ServerTCP {
-    //TODO  wątki serwera powinny zapisywać pobraną wartość do bazy.
-    //TODO  lub powinny zwracać wartość a inny wątek powinien zapisywać wartość do bazy.
 
     /**
      * @param args
@@ -25,8 +21,9 @@ public class ServerTCP {
         uruchomSerwer();
 
     }
-    public static void uruchomSerwer(){
-        int port = 0;
+
+    public static void uruchomSerwer() {
+        int port;
         // boolean portOK = false;
         // while (!portOK) {
         // Scanner scan = new Scanner(System.in);
@@ -45,6 +42,7 @@ public class ServerTCP {
         try {
             serverSocket = new ServerSocket(port);
             while (true) {
+                System.out.println("aktywnych wątków: " + Thread.activeCount() + "\n");
                 System.out.println("Czekam na połączenie na porcie " + port + "\n");
                 Socket socket = serverSocket.accept();
                 System.out.println("Odbieram połączenie \n");

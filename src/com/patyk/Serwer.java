@@ -3,10 +3,14 @@ package com.patyk;
 import static com.patyk.tcp.ServerTCP.uruchomSerwer;
 
 public class Serwer {
-    //TODO
 
     public static void main(String[] args) {
-        System.out.println("Mój tekst");
+        Serwer serwer = new Serwer();
+        serwer.uruchom();
+    }
+
+    public void uruchom() {
+        System.out.println("Uruchamiam serwer");
         uruchomSerwer();
     }
 }

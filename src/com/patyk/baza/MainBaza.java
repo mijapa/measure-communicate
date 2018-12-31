@@ -3,6 +3,7 @@ package com.patyk.baza;
 import java.sql.Connection;
 import java.sql.Statement;
 
+import static com.patyk.baza.Baza.closeConnection;
 import static com.patyk.baza.Baza.createStatement;
 import static com.patyk.baza.CreateDatabase.executeUpdate;
 import static com.patyk.baza.CreateDatabase.getConnection;
@@ -35,16 +36,18 @@ public class MainBaza {
                     System.out.println("Baza nieutworzona!");
                     System.exit(1);
                 }
-                if (executeUpdate(st, "CREATE TABLE czujniki ( id INT NOT NULL, wart FLOAT NOT NULL, date DATE NOT NULL, time TIME NOT NULL, PRIMARY KEY (date, time) );") != -1)
+                if (executeUpdate(st, "CREATE TABLE czujniki ( id INT NOT NULL, wart FLOAT NOT NULL, time TIME NOT NULL, date DATE NOT NULL, sample INT NOT NULL AUTO_INCREMENT KEY);") != -1)
                     System.out.println("Tabela utworzona");
                 else
                     System.out.println("Tabela nie utworzona!");
             }
             if (executeUpdate(st, "INSERT INTO `czujniki` (`id`, `wart`, `date`, `time`) VALUES ('" + id + "', '" + wartosc + "', CURRENT_DATE(), CURRENT_TIME())") != -1) {
-                System.out.println("Nowa wartość wstawiona");
+                System.out.println("Nowa wartość wstawiona\n");
+                closeConnection(con, st);
                 return 0;
             } else {
-                System.out.println("Nowa wartośc niewstawiona!");
+                System.out.println("Nowa wartośc niewstawiona\n!");
+                closeConnection(con, st);
                 return -1;
             }
         }
