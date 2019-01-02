@@ -37,7 +37,7 @@ public class SwingWorkerRealTime {
 
         // WYKONYWANIE OPERACJI NA BAZIE DANYCH
         System.out.println("Pobieranie danych z bazy:");
-        sql = "SELECT wart FROM czujniki where id=0 ORDER BY sample DESC LIMIT 1";
+        sql = "SELECT * FROM czujniki where id=0 ORDER BY sample DESC LIMIT 1";
         s = createStatement(connection);
 
 
@@ -58,7 +58,7 @@ public class SwingWorkerRealTime {
                         new double[]{0},
                         new double[]{0});
         chart.getStyler().setLegendVisible(false);
-        chart.getStyler().setXAxisTicksVisible(false);
+//        chart.getStyler().setXAxisTicksVisible(false);
 
         // Show it
         sw = new SwingWrapper<XYChart>(chart);
@@ -68,27 +68,37 @@ public class SwingWorkerRealTime {
         mySwingWorker.execute();
     }
 
-    private class MySwingWorker extends SwingWorker<Boolean, double[]> {
+    class XYData {
+        private double x;
+        private double y;
 
-        final LinkedList<Double> fifo = new LinkedList<Double>();
+        public XYData(double x, double y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
+
+    private class MySwingWorker extends SwingWorker<Boolean, XYData[]> {
+
+        final LinkedList<XYData> fifo = new LinkedList<XYData>();
 
         public MySwingWorker() {
 
-            fifo.add(0.0);
+//            fifo.add(new XYData(0.0, 0.0));
         }
 
         @Override
         protected Boolean doInBackground() throws Exception {
-            //TODO sprubój pobierać też informację o czasie
+            //TODO sprubój pobierać też informację o czasie zamiast "sample"
 
             while (!isCancelled()) {
-
-                fifo.add(getData());
+                XYData data = new XYData(getDataX(), getDataY());
+                fifo.add(data);
                 if (fifo.size() > 500) {
                     fifo.removeFirst();
                 }
 
-                double[] array = new double[fifo.size()];
+                XYData[] array = new XYData[fifo.size()];
                 for (int i = 0; i < fifo.size(); i++) {
                     array[i] = fifo.get(i);
                 }
@@ -106,13 +116,22 @@ public class SwingWorkerRealTime {
         }
 
         @Override
-        protected void process(List<double[]> chunks) {
+        protected void process(List<XYData[]> chunks) {
 
             System.out.println("number of chunks: " + chunks.size());
 
-            double[] mostRecentDataSet = chunks.get(chunks.size() - 1);
+            XYData[] mostRecentDataSet = chunks.get(chunks.size() - 1);
+            double[] mostRecentDataSetX = new double[mostRecentDataSet.length];
+            double[] mostRecentDataSetY = new double[mostRecentDataSet.length];
+            for (int i = 0; i < mostRecentDataSet.length; i++) {
+                mostRecentDataSetX[i] = mostRecentDataSet[i].x;
+                mostRecentDataSetY[i] = mostRecentDataSet[i].y;
 
-            chart.updateXYSeries("randomWalk", null, mostRecentDataSet, null);
+
+            }
+
+
+            chart.updateXYSeries("randomWalk", mostRecentDataSetX, mostRecentDataSetY, null);
             sw.repaintChart();
 
             long start = System.currentTimeMillis();
@@ -125,13 +144,25 @@ public class SwingWorkerRealTime {
             }
         }
 
-        protected Double getData() {
+        protected Double getDataY() {
             Double data;
             ResultSet r = executeQuery(s, sql);
             data = (double) 1.0;
             try {
                 r.first();
                 data = (double) r.getFloat("wart");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return data;
+        }
+
+        protected Double getDataX() {
+            ResultSet r = executeQuery(s, sql);
+            Double data = (double) 1.0;
+            try {
+                r.first();
+                data = r.getDouble("sample");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
