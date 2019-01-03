@@ -18,6 +18,7 @@ import static com.patyk.baza.Baza.*;
  * Creates a real-time chart using SwingWorker
  */
 public class SwingWorkerRealTime {
+    public static final String CZUJNIK_1 = "Czujnik 1";
     //TODO zrób kilka wykresów dla poszczególnych czujników
 
     private static String sql;
@@ -55,7 +56,7 @@ public class SwingWorkerRealTime {
                         "SwingWorker XChart Real-time Demo",
                         "Time",
                         "Value",
-                        "randomWalk",
+                        CZUJNIK_1,
                         new double[]{0},
                         new double[]{0});
 //        chart.getStyler().setLegendVisible(false);
@@ -76,6 +77,14 @@ public class SwingWorkerRealTime {
         public XYData(double x, double y) {
             this.x = x;
             this.y = y;
+        }
+    }
+
+    class CzujnikiData {
+        private XYData[] xyData;
+
+        public CzujnikiData(XYData[] xyData) {
+            this.xyData = xyData;
         }
     }
 
@@ -132,7 +141,7 @@ public class SwingWorkerRealTime {
             }
 
 
-            chart.updateXYSeries("randomWalk", mostRecentDataSetX, mostRecentDataSetY, null);
+            chart.updateXYSeries(CZUJNIK_1, mostRecentDataSetX, mostRecentDataSetY, null);
             sw.repaintChart();
 
             long start = System.currentTimeMillis();
