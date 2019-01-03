@@ -19,6 +19,7 @@ import static com.patyk.baza.Baza.*;
  */
 public class SwingWorkerRealTime {
     public static final String CZUJNIK_1 = "Czujnik 1";
+    public static final String CZUJNIK_2 = "Czujnik 2";
     //TODO zrób kilka wykresów dla poszczególnych czujników
 
     private static String sql;
@@ -61,6 +62,7 @@ public class SwingWorkerRealTime {
                         new double[]{0});
 //        chart.getStyler().setLegendVisible(false);
 //        chart.getStyler().setXAxisTicksVisible(false);
+        chart.addSeries(CZUJNIK_2, new double[]{0}, new double[]{0});
 
         // Show it
         sw = new SwingWrapper<XYChart>(chart);
@@ -88,9 +90,9 @@ public class SwingWorkerRealTime {
         }
     }
 
-    private class MySwingWorker extends SwingWorker<Boolean, XYData[]> {
+    private class MySwingWorker extends SwingWorker<Boolean, CzujnikiData[]> {
 
-        final LinkedList<XYData> fifo = new LinkedList<XYData>();
+        final LinkedList<CzujnikiData> fifo = new LinkedList<>();
 
         public MySwingWorker() {
 
@@ -102,13 +104,15 @@ public class SwingWorkerRealTime {
 
 
             while (!isCancelled()) {
-                XYData data = new XYData(getDataX(), getDataY());
+//                XYData data = new XYData(getDataX(), getDataY());
+                XYData[] xyData = new XYData[]{new XYData(getDataX(), getDataY()), new XYData(getDataX(), getDataY() + 1)};
+                CzujnikiData data = new CzujnikiData(xyData);
                 fifo.add(data);
                 if (fifo.size() > 5000) {
                     fifo.removeFirst();
                 }
 
-                XYData[] array = new XYData[fifo.size()];
+                CzujnikiData[] array = new CzujnikiData[fifo.size()];
                 for (int i = 0; i < fifo.size(); i++) {
                     array[i] = fifo.get(i);
                 }
@@ -126,22 +130,29 @@ public class SwingWorkerRealTime {
         }
 
         @Override
-        protected void process(List<XYData[]> chunks) {
+        protected void process(List<CzujnikiData[]> chunks) {
 
             System.out.println("number of chunks: " + chunks.size());
 
-            XYData[] mostRecentDataSet = chunks.get(chunks.size() - 1);
-            double[] mostRecentDataSetX = new double[mostRecentDataSet.length];
-            double[] mostRecentDataSetY = new double[mostRecentDataSet.length];
-            for (int i = 0; i < mostRecentDataSet.length; i++) {
-                mostRecentDataSetX[i] = mostRecentDataSet[i].x;
-                mostRecentDataSetY[i] = mostRecentDataSet[i].y;
+//            XYData[] mostRecentDataSet = chunks.get(chunks.size() - 1);
+            CzujnikiData[] mostRecentDataSet = chunks.get(chunks.size() - 1);
+            XYData[] xyData = new XYData[mostRecentDataSet.length];
+            double[][] mostRecentDataSetX = new double[2][mostRecentDataSet.length];
+            double[][] mostRecentDataSetY = new double[2][mostRecentDataSet.length];
 
+            for (int i = 0; i < mostRecentDataSet.length; i++) {
+                for (int j = 0; j < 2; j++) {
+                    xyData[i] = mostRecentDataSet[i].xyData[j];
+                    mostRecentDataSetX[j][i] = xyData[i].x;
+                    mostRecentDataSetY[j][i] = xyData[i].y;
+
+                }
 
             }
 
 
-            chart.updateXYSeries(CZUJNIK_1, mostRecentDataSetX, mostRecentDataSetY, null);
+            chart.updateXYSeries(CZUJNIK_1, mostRecentDataSetX[0], mostRecentDataSetY[0], null);
+            chart.updateXYSeries(CZUJNIK_2, mostRecentDataSetX[1], mostRecentDataSetY[1], null);
             sw.repaintChart();
 
             long start = System.currentTimeMillis();
