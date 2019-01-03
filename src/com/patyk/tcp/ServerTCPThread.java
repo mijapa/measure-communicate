@@ -30,14 +30,20 @@ public class ServerTCPThread extends Thread {
         try {
             System.out.println("Wątek servera próbuje odebrać wiadomość\n");
             BufferedReader in = new BufferedReader(new InputStreamReader(mySocket.getInputStream()));
-            String str;
+            String id;
+            String wart;
+            String milisDate;
             System.out.println("Watek serwera odbiera wiadomość\n");
 //            while (!(str = in.readLine()).equals("end"))
-            str = in.readLine();
-                System.out.println(mySocket.getInetAddress() + " : " + str);
+            id = in.readLine();
+            System.out.println(mySocket.getInetAddress() + " : " + id);
+            wart = in.readLine();
+            System.out.println(mySocket.getInetAddress() + " : " + wart);
+            milisDate = in.readLine();
+            System.out.println(mySocket.getInetAddress() + " : " + milisDate);
             mySocket.close();
             System.out.println("Watek serwera próbuje zapisac wartość do bazy danych\n");
-            databaseInsert(0, Float.valueOf(str));
+            databaseInsert(Integer.valueOf(id), Float.valueOf(wart), Long.valueOf(milisDate));
         } catch (Exception e) {
             e.printStackTrace();
         }

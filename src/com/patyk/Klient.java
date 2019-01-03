@@ -1,5 +1,7 @@
 package com.patyk;
 
+import java.util.Date;
+
 import static com.patyk.tcp.ClientTCP.wyslijKomunikatFloat;
 
 public class Klient extends Thread {
@@ -24,9 +26,9 @@ public class Klient extends Thread {
     public void run() {
         while (true) {
             System.out.println(this.temperatura());
-            wyslijKomunikatFloat(this.temperatura(), "localhost");
+            wyslijKomunikatFloat(this.ID, this.temperatura(), (new Date()).getTime(), "localhost");
             try {
-                sleep(1000);
+                sleep(250);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

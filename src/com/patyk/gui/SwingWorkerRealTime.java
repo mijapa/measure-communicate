@@ -18,6 +18,7 @@ import static com.patyk.baza.Baza.*;
  * Creates a real-time chart using SwingWorker
  */
 public class SwingWorkerRealTime {
+    //TODO zrób kilka wykresów dla poszczególnych czujników
 
     private static String sql;
     private static Statement s;
@@ -37,7 +38,7 @@ public class SwingWorkerRealTime {
 
         // WYKONYWANIE OPERACJI NA BAZIE DANYCH
         System.out.println("Pobieranie danych z bazy:");
-        sql = "SELECT * FROM czujniki where id=0 ORDER BY sample DESC LIMIT 1";
+        sql = "SELECT * FROM czujniki where id=0 ORDER BY milisDate DESC LIMIT 1";
         s = createStatement(connection);
 
 
@@ -57,7 +58,7 @@ public class SwingWorkerRealTime {
                         "randomWalk",
                         new double[]{0},
                         new double[]{0});
-        chart.getStyler().setLegendVisible(false);
+//        chart.getStyler().setLegendVisible(false);
 //        chart.getStyler().setXAxisTicksVisible(false);
 
         // Show it
@@ -89,12 +90,12 @@ public class SwingWorkerRealTime {
 
         @Override
         protected Boolean doInBackground() throws Exception {
-            //TODO sprubój pobierać też informację o czasie zamiast "sample"
+
 
             while (!isCancelled()) {
                 XYData data = new XYData(getDataX(), getDataY());
                 fifo.add(data);
-                if (fifo.size() > 500) {
+                if (fifo.size() > 5000) {
                     fifo.removeFirst();
                 }
 
@@ -138,7 +139,7 @@ public class SwingWorkerRealTime {
             long duration = System.currentTimeMillis() - start;
             try {
                 Thread.sleep(40 - duration); // 40 ms ==> 25fps
-                // Thread.sleep(400 - duration); // 40 ms ==> 2.5fps
+                // Thread.sleep(400 - duration); // 400 ms ==> 2.5fps
             } catch (InterruptedException e) {
                 System.out.println("InterruptedException occurred.");
             }
@@ -162,11 +163,11 @@ public class SwingWorkerRealTime {
             Double data = (double) 1.0;
             try {
                 r.first();
-                data = r.getDouble("sample");
+                data = Double.valueOf(r.getLong("milisDate"));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            return data;
+            return data / 1000;
         }
     }
 }
