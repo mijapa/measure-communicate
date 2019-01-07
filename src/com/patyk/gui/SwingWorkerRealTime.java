@@ -18,11 +18,8 @@ import static com.patyk.baza.Baza.*;
  * Creates a real-time chart using SwingWorker
  */
 public class SwingWorkerRealTime {
-    public static final String CZUJNIK_1 = "Czujnik 1";
-    public static final String CZUJNIK_2 = "Czujnik 2";
-    public static final String CZUJNIK_3 = "Czujnik 3";
-    public static final String CZUJNIK_4 = "Czujnik 4";
-    public static final Integer ILOSC_CZUJNIKOW = 4;
+    public static final String CZUJNIK_1 = "czujnik 1";
+    public static final Integer ILOSC_CZUJNIKOW = 10;
     //TODO zastąp jakos milisData na wykresie, mozna odjąc dzisiejszą datę i wyświetlać tylko krótkie dzisiejsze sekundy
 
     private static String sql;
@@ -63,10 +60,13 @@ public class SwingWorkerRealTime {
                         new double[]{0},
                         new double[]{0});
 //        chart.getStyler().setLegendVisible(false);
+//        chart.setTitle("CZUJNIKI");
+//        chart.setXAxisTitle("Czas [s]");
+//        chart.setYAxisTitle("Temperatura [C]");
         chart.getStyler().setXAxisTicksVisible(false);
-        chart.addSeries(CZUJNIK_2, new double[]{0}, new double[]{0});
-        chart.addSeries(CZUJNIK_3, new double[]{0}, new double[]{0});
-        chart.addSeries(CZUJNIK_4, new double[]{0}, new double[]{0});
+        for (int i = 2; i <= ILOSC_CZUJNIKOW; i++) {
+            chart.addSeries("czujnik " + i, new double[]{0}, new double[]{0});
+        }
 //        TODO add Series in some kind of loop
 
         // Show it
@@ -109,16 +109,14 @@ public class SwingWorkerRealTime {
 
 
             while (!isCancelled()) {
-                XYData[] xyData = new XYData[]{
-                        new XYData(getDataX(0), getDataY(0)),
-                        new XYData(getDataX(1), getDataY(1)),
-                        new XYData(getDataX(2), getDataY(2)),
-                        new XYData(getDataX(3), getDataY(3))
-                };
+                XYData[] xyData = new XYData[ILOSC_CZUJNIKOW];
+                for (int i = 0; i < ILOSC_CZUJNIKOW; i++) {
+                    xyData[i] = new XYData(getDataX(i), getDataY(i));
+                }
 //TODO gather data in some kind of loop
                 CzujnikiData data = new CzujnikiData(xyData);
                 fifo.add(data);
-                if (fifo.size() > 100) {
+                if (fifo.size() > 10) {
                     fifo.removeFirst();
                 }
 
@@ -150,7 +148,6 @@ public class SwingWorkerRealTime {
             double[][] mostRecentDataSetX = new double[ILOSC_CZUJNIKOW][mostRecentDataSet.length];
             double[][] mostRecentDataSetY = new double[ILOSC_CZUJNIKOW][mostRecentDataSet.length];
 
-//TODO draw more datasets
             for (int i = 0; i < mostRecentDataSet.length; i++) {
                 for (int j = 0; j < ILOSC_CZUJNIKOW; j++) {
                     xyData[i] = mostRecentDataSet[i].xyData[j];
@@ -161,12 +158,9 @@ public class SwingWorkerRealTime {
 
             }
 
-
-            chart.updateXYSeries(CZUJNIK_1, mostRecentDataSetX[0], mostRecentDataSetY[0], null);
-            chart.updateXYSeries(CZUJNIK_2, mostRecentDataSetX[1], mostRecentDataSetY[1], null);
-            chart.updateXYSeries(CZUJNIK_3, mostRecentDataSetX[2], mostRecentDataSetY[2], null);
-            chart.updateXYSeries(CZUJNIK_4, mostRecentDataSetX[3], mostRecentDataSetY[3], null);
-            //TODO do update in some kind of loop
+            for (int i = 0; i < ILOSC_CZUJNIKOW; i++) {
+                chart.updateXYSeries("czujnik " + (i + 1), mostRecentDataSetX[i], mostRecentDataSetY[i], null);
+            }
             sw.repaintChart();
 
             long start = System.currentTimeMillis();

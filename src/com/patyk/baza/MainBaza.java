@@ -21,6 +21,9 @@ public class MainBaza {
         Connection con = getConnection("localhost", 3306);
         Statement st = createStatement(con);
         if (st != null) {
+            //TODO tworzenie bazy przy uruchomieniu serwera
+            //TODO opcja utworzenia bazy z parametry dostępu do serwera: ip, port
+            //TODO klient podanie parametrów dostępu do serwera: ip, port, wyświetlanie właściwości
             if (executeUpdate(st, "USE " + DATABASE_NAME + ";") != -1)
                 System.out.println("Baza wybrana");
             else {
