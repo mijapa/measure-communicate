@@ -39,10 +39,16 @@ public class MainBaza {
                     System.out.println("Baza nieutworzona!");
                     System.exit(1);
                 }
-                if (executeUpdate(st, "CREATE TABLE czujniki ( id INT NOT NULL, wart FLOAT NOT NULL,  milisDate INT8 NOT NULL, sample INT NOT NULL AUTO_INCREMENT KEY);") != -1)
+                if (executeUpdate(st, "CREATE TABLE czujniki (id INT NOT NULL, wart FLOAT NOT NULL,  milisDate INT8 NOT NULL);") != -1)
                     System.out.println("Tabela utworzona");
                 else {
                     System.out.println("Tabela nie utworzona!");
+                    System.exit(1);
+                }
+                if (executeUpdate(st, "ALTER TABLE `czujniki` ADD PRIMARY KEY( `id`, `milisDate`);") != -1)
+                    System.out.println("Klucz główny dodany");
+                else {
+                    System.out.println("Klucz główny nie dodany!");
                     System.exit(1);
                 }
                 if (executeUpdate(st, "ALTER TABLE `IntDom`.`czujniki` ADD INDEX `milisDate_ind` (`milisDate`);") != -1)
