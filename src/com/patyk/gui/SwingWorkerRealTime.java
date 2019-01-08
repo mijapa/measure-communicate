@@ -67,7 +67,6 @@ public class SwingWorkerRealTime {
         for (int i = 2; i <= ILOSC_CZUJNIKOW; i++) {
             chart.addSeries("czujnik " + i, new double[]{0}, new double[]{0});
         }
-//        TODO add Series in some kind of loop
 
         // Show it
         sw = new SwingWrapper<XYChart>(chart);
@@ -113,10 +112,9 @@ public class SwingWorkerRealTime {
                 for (int i = 0; i < ILOSC_CZUJNIKOW; i++) {
                     xyData[i] = new XYData(getDataX(i), getDataY(i));
                 }
-//TODO gather data in some kind of loop
                 CzujnikiData data = new CzujnikiData(xyData);
                 fifo.add(data);
-                if (fifo.size() > 10) {
+                if (fifo.size() > 500) {
                     fifo.removeFirst();
                 }
 
