@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import static com.patyk.baza.MainBaza.tryToConnectOrCreateDatabase;
+
 /**
  * @author micha
  *
@@ -37,6 +39,9 @@ public class ServerTCP {
         // scan.close();
         // }
         // }
+
+        tryToConnectOrCreateDatabase();
+
         port = 8080;
         ServerSocket serverSocket = null;
         try {

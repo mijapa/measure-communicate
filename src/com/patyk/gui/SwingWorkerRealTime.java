@@ -37,6 +37,7 @@ public class SwingWorkerRealTime {
         }
 
         connection = connectToDatabase("localhost:3306", "IntDom", "root", "");
+        s = createStatement(connection);
 
         // WYKONYWANIE OPERACJI NA BAZIE DANYCH
         System.out.println("Pobieranie danych z bazy:");
@@ -64,6 +65,7 @@ public class SwingWorkerRealTime {
 //        chart.setXAxisTitle("Czas [s]");
 //        chart.setYAxisTitle("Temperatura [C]");
         chart.getStyler().setXAxisTicksVisible(false);
+
         for (int i = 2; i <= ILOSC_CZUJNIKOW; i++) {
             chart.addSeries("czujnik " + i, new double[]{0}, new double[]{0});
         }
@@ -97,11 +99,6 @@ public class SwingWorkerRealTime {
     private class MySwingWorker extends SwingWorker<Boolean, CzujnikiData[]> {
 
         final LinkedList<CzujnikiData> fifo = new LinkedList<>();
-
-        public MySwingWorker() {
-
-//            fifo.add(new XYData(0.0, 0.0));
-        }
 
         @Override
         protected Boolean doInBackground() throws Exception {
@@ -138,6 +135,7 @@ public class SwingWorkerRealTime {
         @Override
         protected void process(List<CzujnikiData[]> chunks) {
 
+            long start = System.currentTimeMillis();
             System.out.println("number of chunks: " + chunks.size());
 
 //            XYData[] mostRecentDataSet = chunks.get(chunks.size() - 1);
@@ -161,7 +159,6 @@ public class SwingWorkerRealTime {
             }
             sw.repaintChart();
 
-            long start = System.currentTimeMillis();
             long duration = System.currentTimeMillis() - start;
             try {
                 Thread.sleep(40 - duration); // 40 ms ==> 25fps
@@ -174,7 +171,6 @@ public class SwingWorkerRealTime {
         protected Double getDataY(int id) {
             Double data;
             sql = "SELECT * FROM czujniki where id=" + id + " ORDER BY milisDate DESC LIMIT 1";
-            s = createStatement(connection);
             ResultSet r = executeQuery(s, sql);
             data = 1.0;
             try {
@@ -188,7 +184,6 @@ public class SwingWorkerRealTime {
 
         protected Double getDataX(int id) {
             sql = "SELECT * FROM czujniki where id=" + id + " ORDER BY milisDate DESC LIMIT 1";
-            s = createStatement(connection);
             ResultSet r = executeQuery(s, sql);
             Double data = 1.0;
             try {

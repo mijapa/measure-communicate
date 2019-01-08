@@ -17,13 +17,10 @@ public class MainBaza {
 
     }
 
-    public static int databaseInsert(Integer id, Float wartosc, Long milisDate) {
+    public static int tryToConnectOrCreateDatabase() {
         Connection con = getConnection("localhost", 3306);
         Statement st = createStatement(con);
         if (st != null) {
-            //TODO tworzenie bazy przy uruchomieniu serwera
-            //TODO opcja utworzenia bazy z parametry dostępu do serwera: ip, port
-            //TODO klient podanie parametrów dostępu do serwera: ip, port, wyświetlanie właściwości
             if (executeUpdate(st, "USE " + DATABASE_NAME + ";") != -1)
                 System.out.println("Baza wybrana");
             else {
@@ -34,16 +31,36 @@ public class MainBaza {
                     System.out.println("Baza utworzona");
                     if (executeUpdate(st, "USE " + DATABASE_NAME + ";") != -1)
                         System.out.println("Baza wybrana");
-                    else
+                    else {
                         System.out.println("Baza niewybrana!");
+                        System.exit(1);
+                    }
                 } else {
                     System.out.println("Baza nieutworzona!");
                     System.exit(1);
                 }
                 if (executeUpdate(st, "CREATE TABLE czujniki ( id INT NOT NULL, wart FLOAT NOT NULL, time TIME NOT NULL, date DATE NOT NULL, milisDate INT8 NOT NULL, sample INT NOT NULL AUTO_INCREMENT KEY);") != -1)
                     System.out.println("Tabela utworzona");
-                else
+                else {
                     System.out.println("Tabela nie utworzona!");
+                    System.exit(1);
+                }
+            }
+        }
+        return 0;
+    }
+
+    public static int databaseInsert(Integer id, Float wartosc, Long milisDate) {
+        Connection con = getConnection("localhost", 3306);
+        Statement st = createStatement(con);
+        if (st != null) {
+            //TODO opcja utworzenia bazy z parametry dostępu do serwera: ip, port
+            //TODO klient podanie parametrów dostępu do serwera: ip, port, wyświetlanie właściwości
+            if (executeUpdate(st, "USE " + DATABASE_NAME + ";") != -1)
+                System.out.println("Baza wybrana");
+            else {
+                System.out.println("Baza niewybrana!");
+                System.exit(1);
             }
             if (executeUpdate(st, "INSERT INTO `czujniki` (`id`, `wart`, `date`, `time`, `milisDate`) VALUES ('" + id + "', '" + wartosc + "', CURRENT_DATE(), CURRENT_TIME(), '" + milisDate + "')") != -1) {
                 System.out.println("Nowa wartość wstawiona\n");
