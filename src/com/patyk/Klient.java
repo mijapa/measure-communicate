@@ -5,6 +5,7 @@ import java.util.Date;
 import static com.patyk.tcp.ClientTCP.wyslijKomunikatFloat;
 
 public class Klient extends Thread {
+    //TODO klient pownien być nowoczesnym watkiem
     private static Integer nextID = 0;
     private Integer ID;
     private Czujnik czujnik = new Czujnik();

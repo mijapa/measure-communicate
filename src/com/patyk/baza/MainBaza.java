@@ -39,11 +39,17 @@ public class MainBaza {
                     System.out.println("Baza nieutworzona!");
                     System.exit(1);
                 }
-                if (executeUpdate(st, "CREATE TABLE czujniki ( id INT NOT NULL, wart FLOAT NOT NULL, time TIME NOT NULL, date DATE NOT NULL, milisDate INT8 NOT NULL, sample INT NOT NULL AUTO_INCREMENT KEY);") != -1)
+                if (executeUpdate(st, "CREATE TABLE czujniki ( id INT NOT NULL, wart FLOAT NOT NULL,  milisDate INT8 NOT NULL, sample INT NOT NULL AUTO_INCREMENT KEY);") != -1)
                     System.out.println("Tabela utworzona");
                 else {
                     System.out.println("Tabela nie utworzona!");
                     System.exit(1);
+                }
+                if (executeUpdate(st, "ALTER TABLE `IntDom`.`czujniki` ADD INDEX `milisDate_ind` (`milisDate`);") != -1)
+                    System.out.println("Indeks milisDate_ind dodany");
+                else {
+                    System.out.println("Indeks nie dodany!");
+                    return -1;
                 }
             }
         }
@@ -62,7 +68,7 @@ public class MainBaza {
                 System.out.println("Baza niewybrana!");
                 System.exit(1);
             }
-            if (executeUpdate(st, "INSERT INTO `czujniki` (`id`, `wart`, `date`, `time`, `milisDate`) VALUES ('" + id + "', '" + wartosc + "', CURRENT_DATE(), CURRENT_TIME(), '" + milisDate + "')") != -1) {
+            if (executeUpdate(st, "INSERT INTO `czujniki` (`id`, `wart`, `milisDate`) VALUES ('" + id + "', '" + wartosc + "', '" + milisDate + "')") != -1) {
                 System.out.println("Nowa wartość wstawiona\n");
                 closeConnection(con, st);
                 return 0;

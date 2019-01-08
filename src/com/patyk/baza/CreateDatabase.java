@@ -1,30 +1,31 @@
 package com.patyk.baza;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
 
-import static com.patyk.baza.Baza.*;
-
 public class CreateDatabase {
-    public static void main(String[] args) {
-        Connection con = getConnection("localhost", 3306);
-        Statement st = createStatement(con);
-// utworzenie bazy
-        if (executeUpdate(st, "create Database nowaBaza;") != -1)
-            System.out.println("Baza utworzona");
-        else
-            System.out.println("Baza nieutworzona!");
-
-        if (executeUpdate(st, "USE nowaBaza;") != -1)
-            System.out.println("Baza wybrana");
-        else
-            System.out.println("Baza niewybrana!");
-
-        if (executeUpdate(st, "CREATE TABLE ksiazki ( id INT NOT NULL, tytul VARCHAR(50) NOT NULL, autor INT NOT NULL, PRIMARY KEY (id) );") != -1)
-            System.out.println("Tabela utworzona");
-        else
-            System.out.println("Tabela nie utworzona!");
-    }
+//    public static void main(String[] args) {
+//        Connection con = getConnection("localhost", 3306);
+//        Statement st = createStatement(con);
+//// utworzenie bazy
+//        if (executeUpdate(st, "create Database nowaBaza;") != -1)
+//            System.out.println("Baza utworzona");
+//        else
+//            System.out.println("Baza nieutworzona!");
+//
+//        if (executeUpdate(st, "USE nowaBaza;") != -1)
+//            System.out.println("Baza wybrana");
+//        else
+//            System.out.println("Baza niewybrana!");
+//
+//        if (executeUpdate(st, "CREATE TABLE ksiazki ( id INT NOT NULL, tytul VARCHAR(50) NOT NULL, autor INT NOT NULL, PRIMARY KEY (id) );") != -1)
+//            System.out.println("Tabela utworzona");
+//        else
+//            System.out.println("Tabela nie utworzona!");
+//    }
 
 
     /**

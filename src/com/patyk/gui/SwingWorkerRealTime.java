@@ -111,7 +111,7 @@ public class SwingWorkerRealTime {
                 }
                 CzujnikiData data = new CzujnikiData(xyData);
                 fifo.add(data);
-                if (fifo.size() > 500) {
+                if (fifo.size() > 5000) {
                     fifo.removeFirst();
                 }
 
@@ -161,7 +161,7 @@ public class SwingWorkerRealTime {
 
             long duration = System.currentTimeMillis() - start;
             try {
-                Thread.sleep(40 - duration); // 40 ms ==> 25fps
+                Thread.sleep(20 - duration); // 40 ms ==> 25fps
                 // Thread.sleep(400 - duration); // 400 ms ==> 2.5fps
             } catch (InterruptedException e) {
                 System.out.println("InterruptedException occurred.");
