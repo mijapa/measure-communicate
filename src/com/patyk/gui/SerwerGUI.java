@@ -25,6 +25,9 @@ public class SerwerGUI extends JFrame {
 
         add(new UruchomSerwerButton());
 
+//        JPanel chartPanel = new XChartPanel<XYChart>(chart);
+//        add(chartPanel);
+
 
         setVisible(true);
 
@@ -38,9 +41,11 @@ public class SerwerGUI extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
+            setBackground(Color.GREEN);
             exec.execute(new Serwer());
+            setText("Serwer Uruchomiony");
+            setEnabled(false);
         }
     }
-
-
 }
+
