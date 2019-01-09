@@ -25,7 +25,7 @@ public class Klient extends Thread {
             System.out.println(czujnik.zmierzTemperature());
             wyslijKomunikatFloat(this.ID, czujnik.zmierzTemperature(), (new Date()).getTime(), "localhost");
             try {
-                sleep(250);
+                sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

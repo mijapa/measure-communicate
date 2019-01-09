@@ -2,14 +2,15 @@ package com.patyk;
 
 import static com.patyk.tcp.ServerTCP.uruchomSerwer;
 
-public class Serwer {
+public class Serwer implements Runnable {
 
     public static void main(String[] args) {
         Serwer serwer = new Serwer();
-        serwer.uruchom();
+        serwer.run();
     }
 
-    public void uruchom() {
+    @Override
+    public void run() {
         System.out.println("Uruchamiam serwer");
         uruchomSerwer();
     }
