@@ -27,7 +27,7 @@ public class SwingWorkerRealTime {
     private static Connection connection;
     MySwingWorker mySwingWorker;
     SwingWrapper<XYChart> sw;
-    XYChart chart;
+    public XYChart chart;
 
     public static void main(String[] args) throws Exception {
 
@@ -49,7 +49,7 @@ public class SwingWorkerRealTime {
 
     }
 
-    private void go() {
+    public void go() {
 
         // Create Chart
         chart =
@@ -70,9 +70,9 @@ public class SwingWorkerRealTime {
             chart.addSeries("czujnik " + i, new double[]{0}, new double[]{0});
         }
 
-        // Show it
-        sw = new SwingWrapper<XYChart>(chart);
-        sw.displayChart();
+//        // Show it
+//        sw = new SwingWrapper<XYChart>(chart);
+//        sw.displayChart();
 
         mySwingWorker = new MySwingWorker();
         mySwingWorker.execute();
