@@ -16,7 +16,6 @@ import static com.patyk.gui.SwingWorkerRealTime.CZUJNIK_1;
 import static com.patyk.gui.SwingWorkerRealTime.ILOSC_CZUJNIKOW;
 
 public class SerwerGUI extends JFrame {
-    private JButton uruchomSerwerButton;
     private Executor exec = Executors.newCachedThreadPool();
     private JTextField adresBazyField;
     private JTextField portBazyField;
