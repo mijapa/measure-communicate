@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -13,13 +14,14 @@ import java.util.concurrent.Future;
 public class KlientGUI extends JFrame {
     private final JTextField adresSerweraField;
     private final JTextField portSerweraField;
-    private Future<Double> srednia;
+    private final JLabel sredniaLabel;
+    private Future<Double> sredniaFuture;
     private ExecutorService exec = Executors.newCachedThreadPool();
 
     public KlientGUI() {
         super("Klient");
         pack();
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
         setSize(400, 400);
         setLocation(50, 800);
@@ -39,27 +41,52 @@ public class KlientGUI extends JFrame {
         westPanel.add(portSerweraField);
 
 
-        westPanel.add(new UruchomSerwerButton());
+        westPanel.add(new UruchomKlientaButton());
+
+        sredniaLabel = new JLabel();
+        sredniaLabel.setVisible(false);
+        westPanel.add(sredniaLabel);
 
         add(westPanel, BorderLayout.WEST);
 
         setVisible(true);
     }
 
-    class UruchomSerwerButton extends JButton implements ActionListener {
-        public UruchomSerwerButton() {
-            super("Uruchom Serwer");
+    class UruchomKlientaButton extends JButton implements ActionListener {
+        private Klient klient;
+
+        public UruchomKlientaButton() {
+            super("Uruchom Klienta");
             addActionListener(this);
         }
 
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            setBackground(Color.GREEN);
-            String adresSerwera = adresSerweraField.getText();
-            Integer portSerwera = Integer.parseInt(portSerweraField.getText());
-            srednia = exec.submit(new Klient());
-            setText("Klient Uruchomiony");
-            setEnabled(false);
+            if (getText().equals("Uruchom Klienta")) {
+                setBackground(Color.GREEN);
+                String adresSerwera = adresSerweraField.getText();
+                Integer portSerwera = Integer.parseInt(portSerweraField.getText());
+                klient = new Klient();
+                sredniaFuture = exec.submit(klient);
+                setText("Klient Uruchomiony");
+            } else {
+                setBackground(Color.gray);
+                Double srednia = null;
+                klient.stop = true;
+                try {
+                    srednia = sredniaFuture.get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+
+                sredniaLabel.setText(srednia.toString());
+                sredniaLabel.setVisible(true);
+                setText("Klient Zatrzymany");
+                setEnabled(false);
+
+            }
         }
     }
 }

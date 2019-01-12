@@ -1,6 +1,5 @@
 package com.patyk.gui;
 
-import org.knowm.xchart.QuickChart;
 import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.XYChart;
 
@@ -28,9 +27,23 @@ public class SwingWorkerRealTime {
     MySwingWorker mySwingWorker;
     SwingWrapper<XYChart> sw;
     public XYChart chart;
+    private SerwerGUI serwerGUI;
+
+    public SwingWorkerRealTime(XYChart chart, SerwerGUI serwerGUI) {
+        this.chart = chart;
+        this.serwerGUI = serwerGUI;
+    }
+
 
     public static void main(String[] args) throws Exception {
 
+
+//        SwingWorkerRealTime swingWorkerRealTime = new SwingWorkerRealTime();
+//        swingWorkerRealTime.go();
+
+    }
+
+    public void go() {
         if (ladujSterownik()) ;
         else {
             System.exit(1);
@@ -44,31 +57,6 @@ public class SwingWorkerRealTime {
 
 
 
-        SwingWorkerRealTime swingWorkerRealTime = new SwingWorkerRealTime();
-        swingWorkerRealTime.go();
-
-    }
-
-    public void go() {
-
-        // Create Chart
-        chart =
-                QuickChart.getChart(
-                        "Czujniki",
-                        "Czas [s]",
-                        "Temperatura [C]",
-                        CZUJNIK_1,
-                        new double[]{0},
-                        new double[]{0});
-//        chart.getStyler().setLegendVisible(false);
-//        chart.setTitle("CZUJNIKI");
-//        chart.setXAxisTitle("Czas [s]");
-//        chart.setYAxisTitle("Temperatura [C]");
-        chart.getStyler().setXAxisTicksVisible(false);
-
-        for (int i = 2; i <= ILOSC_CZUJNIKOW; i++) {
-            chart.addSeries("czujnik " + i, new double[]{0}, new double[]{0});
-        }
 
 //        // Show it
 //        sw = new SwingWrapper<XYChart>(chart);
@@ -99,6 +87,7 @@ public class SwingWorkerRealTime {
     private class MySwingWorker extends SwingWorker<Boolean, CzujnikiData[]> {
 
         final LinkedList<CzujnikiData> fifo = new LinkedList<>();
+
 
         @Override
         protected Boolean doInBackground() throws Exception {
@@ -157,7 +146,9 @@ public class SwingWorkerRealTime {
             for (int i = 0; i < ILOSC_CZUJNIKOW; i++) {
                 chart.updateXYSeries("czujnik " + (i + 1), mostRecentDataSetX[i], mostRecentDataSetY[i], null);
             }
-            sw.repaintChart();
+//            sw.repaintChart();
+            serwerGUI.repaint();
+
 
             long duration = System.currentTimeMillis() - start;
             try {

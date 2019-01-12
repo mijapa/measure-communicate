@@ -51,8 +51,6 @@ public class SerwerGUI extends JFrame {
 
         add(westPanel, BorderLayout.WEST);
 
-        SwingWorkerRealTime swingWorkerRealTime = new SwingWorkerRealTime();
-        swingWorkerRealTime.go();
         XYChart chart =
                 QuickChart.getChart(
                         "Czujniki",
@@ -69,6 +67,10 @@ public class SerwerGUI extends JFrame {
         JPanel chartPanel = new XChartPanel<XYChart>(chart);
         chartPanel.setSize(1024, 600);
         add(chartPanel, BorderLayout.CENTER);
+
+        SwingWorkerRealTime swingWorkerRealTime = new SwingWorkerRealTime(chart, this);
+        swingWorkerRealTime.go();
+
 
 
         setVisible(true);

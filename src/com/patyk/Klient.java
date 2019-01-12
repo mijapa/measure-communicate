@@ -9,6 +9,7 @@ import static java.lang.Thread.sleep;
 public class Klient implements Callable<Double> {
     //TODO klient pownien być nowoczesnym watkiem
     private static Integer nextID = 0;
+    public boolean stop = false;
     private Integer ID;
     private Czujnik czujnik = new Czujnik();
     private Float temperatura;
@@ -41,7 +42,7 @@ public class Klient implements Callable<Double> {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if (Thread.currentThread().isInterrupted()) return suma / ilosc;
+            if (stop) return suma / ilosc;
         }
     }
 }
