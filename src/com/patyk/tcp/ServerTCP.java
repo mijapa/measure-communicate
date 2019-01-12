@@ -20,11 +20,11 @@ public class ServerTCP {
      * @param args
      */
     public static void main(String[] args) {
-        uruchomSerwer();
+        uruchomSerwer("localhost", 3306, 8080);
 
     }
 
-    public static void uruchomSerwer() {
+    public static void uruchomSerwer(String databaseAdres, int databasePort, Integer portSerwera) {
         int port;
         // boolean portOK = false;
         // while (!portOK) {
@@ -40,9 +40,9 @@ public class ServerTCP {
         // }
         // }
 
-        tryToConnectOrCreateDatabase();
+        tryToConnectOrCreateDatabase(databaseAdres, databasePort);
 
-        port = 8080;
+        port = portSerwera;
         ServerSocket serverSocket = null;
         try {
             serverSocket = new ServerSocket(port);

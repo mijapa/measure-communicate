@@ -44,6 +44,7 @@ public class CreateDatabase {
             conn = DriverManager.getConnection("jdbc:mysql://" + adres + ":" + port + "/",
                     connectionProps);
         } catch (SQLException e) {
+            System.out.println("Brak komunikacji zwrotnej z serwera!!!");
             e.printStackTrace();
         }
         System.out.println("Connected to database");

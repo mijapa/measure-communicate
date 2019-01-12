@@ -17,8 +17,8 @@ public class MainBaza {
 
     }
 
-    public static int tryToConnectOrCreateDatabase() {
-        Connection con = getConnection("localhost", 3306);
+    public static int tryToConnectOrCreateDatabase(String adres, int port) {
+        Connection con = getConnection(adres, port);
         Statement st = createStatement(con);
         if (st != null) {
             if (executeUpdate(st, "USE " + DATABASE_NAME + ";") != -1)

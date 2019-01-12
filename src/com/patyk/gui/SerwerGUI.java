@@ -86,7 +86,10 @@ public class SerwerGUI extends JFrame {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             setBackground(Color.GREEN);
-            exec.execute(new Serwer());
+            String adresBazy = adresBazyField.getText();
+            Integer portBazy = Integer.parseInt(portBazyField.getText());
+            Integer portSerwera = Integer.parseInt(portNasluchuField.getText());
+            exec.execute(new Serwer(adresBazy, portBazy, portSerwera));
             setText("Serwer Uruchomiony");
             setEnabled(false);
         }
