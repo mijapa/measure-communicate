@@ -16,6 +16,9 @@ import java.util.concurrent.Executors;
 import static com.patyk.gui.SwingWorkerRealTime.CZUJNIK_1;
 import static com.patyk.gui.SwingWorkerRealTime.ILOSC_CZUJNIKOW;
 
+/**
+ * GUI Serwera
+ */
 public class SerwerGUI extends JFrame {
     XYChart chart;
     SerwerGUI gui;
@@ -68,9 +71,6 @@ public class SerwerGUI extends JFrame {
         ThreadCountSwingWorker threadCountSwingWorker = new ThreadCountSwingWorker(threadCountLabel);
         threadCountSwingWorker.execute();
 
-        //TODO uruchamianie czujników przy pomocy guzika
-
-
         add(westPanel, BorderLayout.WEST);
 
         chart =
@@ -102,11 +102,19 @@ public class SerwerGUI extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Uruchamia SwingWorkera aktualizujacego wykres
+     *
+     * @param danePolaczeniaBaza
+     */
     public void uruchomSwingWorkera(DanePolaczeniaBaza danePolaczeniaBaza) {
         SwingWorkerRealTime swingWorkerRealTime = new SwingWorkerRealTime(chart, gui, danePolaczeniaBaza);
         swingWorkerRealTime.go();
     }
 
+    /**
+     * Spersonalizowany przycisk
+     */
     class UruchomSerwerButton extends JButton implements ActionListener {
         public UruchomSerwerButton() {
             super("Uruchom Serwer");
@@ -129,6 +137,9 @@ public class SerwerGUI extends JFrame {
         }
     }
 
+    /**
+     * AsyncTask aktualizujący JLabel z ilością aktywnych wątków
+     */
     class ThreadCountSwingWorker extends SwingWorker<Void, JLabel> {
 
         private JLabel threadCountLabel;
@@ -140,7 +151,7 @@ public class SerwerGUI extends JFrame {
         @Override
         protected Void doInBackground() throws Exception {
             while (!isCancelled()) {
-                threadCountLabel.setText("Aktywnych Watków: " + String.valueOf(Thread.activeCount()));
+                threadCountLabel.setText("Aktywnych Watków: " + Thread.activeCount());
             }
             return null;
         }

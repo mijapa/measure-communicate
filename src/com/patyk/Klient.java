@@ -7,7 +7,6 @@ import static com.patyk.tcp.ClientTCP.wyslijKomunikatFloat;
 import static java.lang.Thread.sleep;
 
 public class Klient implements Callable<Double> {
-    //TODO klient pownien być nowoczesnym watkiem
     private static Integer nextID = 0;
     public boolean stop = false;
     private Integer ID;
@@ -25,15 +24,12 @@ public class Klient implements Callable<Double> {
 
     }
 
-    public static void main(String[] args) {
-        Klient kl = new Klient("localhost", 8080);
-        try {
-            kl.call();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
+    /**
+     * Program wątku
+     *
+     * @return średnia pomiarów
+     * @throws Exception
+     */
     @Override
     public Double call() throws Exception {
         while (true) {

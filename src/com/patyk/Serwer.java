@@ -13,6 +13,9 @@ public class Serwer implements Runnable {
         this.portSerwera = portSerwera;
     }
 
+    /**
+     * Program wątku
+     */
     @Override
     public void run() {
         System.out.println("Uruchamiam serwer");

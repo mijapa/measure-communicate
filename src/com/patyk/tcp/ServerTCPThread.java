@@ -21,7 +21,7 @@ public class ServerTCPThread extends Thread {
     Socket mySocket;
 
     /**
-     *
+     *Konstruktor wątku serwera
      */
     public ServerTCPThread(Socket socket, DanePolaczeniaBaza danePolaczeniaBaza) {
         super();// konstruktor klasy Thread
@@ -29,7 +29,10 @@ public class ServerTCPThread extends Thread {
         this.danePolaczeniaBaza = danePolaczeniaBaza;
     }
 
-    public void run()// proggram wątku
+    /**
+     * Program wątku
+     */
+    public void run()
     {
         try {
             System.out.println("Wątek servera próbuje odebrać wiadomość\n");
@@ -38,7 +41,6 @@ public class ServerTCPThread extends Thread {
             String wart;
             String milisDate;
             System.out.println("Watek serwera odbiera wiadomość\n");
-//            while (!(str = in.readLine()).equals("end"))
             id = in.readLine();
             System.out.println(mySocket.getInetAddress() + " : " + id);
             wart = in.readLine();

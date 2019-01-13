@@ -3,22 +3,6 @@ package com.patyk.baza;
 import java.sql.*;
 
 public class Baza {
-    public static void main(String[] args) {
-        System.out.println("MAIN");
-        if (ladujSterownik());
-        else
-            System.exit(1);
-
-        java.sql.Connection connection = connectToDatabase("localhost:3306", "IntDom", "root", "");
-
-        // WYKONYWANIE OPERACJI NA BAZIE DANYCH
-        System.out.println("Pobieranie danych z bazy:");
-        String sql = "select * from czujniki";
-        Statement s = createStatement(connection);
-        ResultSet r = executeQuery(s, sql);
-        printDataFromQuery(r);
-        closeConnection(connection, s);
-    }
 
     /**
      * Metoda ładuje sterownik jdbc
@@ -39,6 +23,15 @@ public class Baza {
         }
     }
 
+    /**
+     * Metoda łączy się z bazą danych
+     *
+     * @param adress
+     * @param dataBaseName
+     * @param userName
+     * @param password
+     * @return
+     */
     public static Connection connectToDatabase(String adress, String dataBaseName, String userName, String password) {
         System.out.print("\nLaczenie z baza danych:");
         String baza = "jdbc:mysql://" + adress + "/" + dataBaseName;
@@ -96,7 +89,6 @@ public class Baza {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        ;
         return null;
     }
 

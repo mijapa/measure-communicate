@@ -6,6 +6,12 @@ public class DanePolaczeniaBaza {
     String user;
     String password;
 
+    /**
+     * @param adresBazy
+     * @param portBazy
+     * @param user
+     * @param password
+     */
     public DanePolaczeniaBaza(String adresBazy, Integer portBazy, String user, String password) {
         this.adresBazy = adresBazy;
         this.portBazy = portBazy;

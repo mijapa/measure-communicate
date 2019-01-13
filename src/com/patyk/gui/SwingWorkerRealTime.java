@@ -13,6 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static com.patyk.baza.Baza.*;
+import static com.patyk.baza.MainBaza.DATABASE_NAME;
 
 /**
  * Creates a real-time chart using SwingWorker
@@ -20,7 +21,6 @@ import static com.patyk.baza.Baza.*;
 public class SwingWorkerRealTime {
     public static final String CZUJNIK_1 = "czujnik 1";
     public static final Integer ILOSC_CZUJNIKOW = 10;
-    //TODO zastąp jakos milisData na wykresie, mozna odjąc dzisiejszą datę i wyświetlać tylko krótkie dzisiejsze sekundy
 
     private static String sql;
     private static Statement s;
@@ -46,7 +46,7 @@ public class SwingWorkerRealTime {
 
         connection = connectToDatabase(
                 danePolaczeniaBaza.getAdresBazy() + ":" + danePolaczeniaBaza.getPortBazy(),
-                "IntDom",
+                DATABASE_NAME,
                 danePolaczeniaBaza.getUser(),
                 danePolaczeniaBaza.getPassword());
 //        connection = connectToDatabase("localhost:3306", "IntDom", "root", "");

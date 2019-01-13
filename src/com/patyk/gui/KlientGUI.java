@@ -11,6 +11,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+/**
+ * GUI klienta
+ */
 public class KlientGUI extends JFrame {
     private final JTextField adresSerweraField;
     private final JTextField portSerweraField;
@@ -52,6 +55,9 @@ public class KlientGUI extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Personalizowany przycisk
+     */
     class UruchomKlientaButton extends JButton implements ActionListener {
         private Klient klient;
 
@@ -60,6 +66,11 @@ public class KlientGUI extends JFrame {
             addActionListener(this);
         }
 
+        /**
+         * Callback wykonywany przy naciśnięciu Personalizowanego przycisku
+         *
+         * @param actionEvent
+         */
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             if (getText().equals("Uruchom Klienta")) {

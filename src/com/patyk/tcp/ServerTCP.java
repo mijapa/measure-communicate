@@ -18,7 +18,12 @@ import static com.patyk.baza.MainBaza.tryToConnectOrCreateDatabase;
  */
 public class ServerTCP {
 
-
+    /**
+     * Statyczna metoda uruchamiająca serwer
+     *
+     * @param danePolaczeniaBaza
+     * @param portSerwera
+     */
     public static void uruchomSerwer(DanePolaczeniaBaza danePolaczeniaBaza, Integer portSerwera) {
 
         tryToConnectOrCreateDatabase(danePolaczeniaBaza);
