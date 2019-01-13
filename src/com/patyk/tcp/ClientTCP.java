@@ -57,10 +57,9 @@ public class ClientTCP {
         System.out.println("Klient: Kończę prace.");
     }
 
-    public static void wyslijKomunikatFloat(Integer ID, Float wart, long milisDate, String adres) {
-        int port = 8080;
+    public static void wyslijKomunikatFloat(Integer ID, Float wart, long milisDate, String adres, Integer portSerwera) {
         try {
-            Socket socket = new Socket(adres, port);
+            Socket socket = new Socket(adres, portSerwera);
             PrintWriter out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
             socket.setTcpNoDelay(true);
             out.println(ID);

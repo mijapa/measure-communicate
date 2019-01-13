@@ -15,9 +15,17 @@ public class Klient implements Callable<Double> {
     private Float temperatura;
     private Double suma = Double.valueOf(0);
     private Integer ilosc = 0;
+    private String adresSerwera;
+    private Integer portSerwera;
 
     public Klient() {
         ID = nextID++;
+    }
+
+    public Klient(String adresSerwera, Integer portSerwera) {
+        this.adresSerwera = adresSerwera;
+        this.portSerwera = portSerwera;
+
     }
 
     public static void main(String[] args) {
@@ -36,7 +44,7 @@ public class Klient implements Callable<Double> {
             temperatura = czujnik.zmierzTemperature();
             suma += temperatura;
             ilosc++;
-            wyslijKomunikatFloat(this.ID, temperatura, (new Date()).getTime(), "localhost");
+            wyslijKomunikatFloat(this.ID, temperatura, (new Date()).getTime(), adresSerwera, portSerwera);
             try {
                 sleep(500);
             } catch (InterruptedException e) {

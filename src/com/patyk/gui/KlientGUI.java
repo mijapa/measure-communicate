@@ -23,7 +23,7 @@ public class KlientGUI extends JFrame {
         pack();
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
-        setSize(400, 400);
+        setSize(300, 200);
         setLocation(50, 800);
 
         setLayout(new FlowLayout());
@@ -66,9 +66,9 @@ public class KlientGUI extends JFrame {
                 setBackground(Color.GREEN);
                 String adresSerwera = adresSerweraField.getText();
                 Integer portSerwera = Integer.parseInt(portSerweraField.getText());
-                klient = new Klient();
+                klient = new Klient(adresSerwera, portSerwera);
                 sredniaFuture = exec.submit(klient);
-                setText("Klient Uruchomiony");
+                setText("Zatrzymaj Klienta");
             } else {
                 setBackground(Color.gray);
                 Double srednia = null;
