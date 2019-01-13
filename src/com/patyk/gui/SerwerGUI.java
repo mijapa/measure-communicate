@@ -62,6 +62,11 @@ public class SerwerGUI extends JFrame {
 
 
         westPanel.add(new UruchomSerwerButton());
+        JLabel threadCountLabel = new JLabel("-");
+        westPanel.add(threadCountLabel);
+
+        ThreadCountSwingWorker threadCountSwingWorker = new ThreadCountSwingWorker(threadCountLabel);
+        threadCountSwingWorker.execute();
 
         //TODO uruchamianie czujników przy pomocy guzika
 
@@ -121,6 +126,23 @@ public class SerwerGUI extends JFrame {
             setText("Serwer Uruchomiony");
             uruchomSwingWorkera(danePolaczeniaBaza);
             setEnabled(false);
+        }
+    }
+
+    class ThreadCountSwingWorker extends SwingWorker<Void, JLabel> {
+
+        private JLabel threadCountLabel;
+
+        public ThreadCountSwingWorker(JLabel threadCountLabel) {
+            this.threadCountLabel = threadCountLabel;
+        }
+
+        @Override
+        protected Void doInBackground() throws Exception {
+            while (!isCancelled()) {
+                threadCountLabel.setText("Aktywnych Watków: " + String.valueOf(Thread.activeCount()));
+            }
+            return null;
         }
     }
 }

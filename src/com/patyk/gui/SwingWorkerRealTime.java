@@ -38,14 +38,6 @@ public class SwingWorkerRealTime {
     }
 
 
-    public static void main(String[] args) throws Exception {
-
-
-//        SwingWorkerRealTime swingWorkerRealTime = new SwingWorkerRealTime();
-//        swingWorkerRealTime.go();
-
-    }
-
     public void go() {
         if (ladujSterownik()) ;
         else {

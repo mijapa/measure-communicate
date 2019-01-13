@@ -15,7 +15,6 @@ public class Serwer implements Runnable {
 
     @Override
     public void run() {
-//        TODO jak przekazać parametry do wątku??
         System.out.println("Uruchamiam serwer");
 
         uruchomSerwer(danePolaczeniaBaza, portSerwera);
