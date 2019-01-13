@@ -1,6 +1,7 @@
 package com.patyk.gui;
 
 import com.patyk.Serwer;
+import com.patyk.baza.DanePolaczeniaBaza;
 import org.knowm.xchart.QuickChart;
 import org.knowm.xchart.XChartPanel;
 import org.knowm.xchart.XYChart;
@@ -16,13 +17,18 @@ import static com.patyk.gui.SwingWorkerRealTime.CZUJNIK_1;
 import static com.patyk.gui.SwingWorkerRealTime.ILOSC_CZUJNIKOW;
 
 public class SerwerGUI extends JFrame {
+    XYChart chart;
+    SerwerGUI gui;
     private Executor exec = Executors.newCachedThreadPool();
     private JTextField adresBazyField;
     private JTextField portBazyField;
     private JTextField portNasluchuField;
+    private JTextField userField;
+    private JTextField passwordField;
 
     public SerwerGUI() throws HeadlessException {
         super("Serwer");
+        gui = this;
         pack();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -33,12 +39,23 @@ public class SerwerGUI extends JFrame {
 
         JPanel westPanel = new JPanel();
         westPanel.setLayout(new GridLayout(25, 1));
+
         westPanel.add(new JLabel("adres bazy danych:"));
         adresBazyField = new JTextField("localhost", 15);
         westPanel.add(adresBazyField);
+
         westPanel.add(new JLabel("port bazy danych:"));
         portBazyField = new JTextField("3306", 15);
         westPanel.add(portBazyField);
+
+        westPanel.add(new JLabel("urzytkownik bazy:"));
+        userField = new JTextField("root", 15);
+        westPanel.add(userField);
+
+        westPanel.add(new JLabel("hasło użytkownika bazy:"));
+        passwordField = new JTextField("", 15);
+        westPanel.add(passwordField);
+
         westPanel.add(new JLabel("port nasłuchu dla czujników:"));
         portNasluchuField = new JTextField("8080", 15);
         westPanel.add(portNasluchuField);
@@ -51,7 +68,7 @@ public class SerwerGUI extends JFrame {
 
         add(westPanel, BorderLayout.WEST);
 
-        XYChart chart =
+        chart =
                 QuickChart.getChart(
                         "Czujniki",
                         "Czas [s]",
@@ -68,14 +85,21 @@ public class SerwerGUI extends JFrame {
         chartPanel.setSize(1024, 600);
         add(chartPanel, BorderLayout.CENTER);
 
-        SwingWorkerRealTime swingWorkerRealTime = new SwingWorkerRealTime(chart, this);
-        swingWorkerRealTime.go();
+        String adresBazy = adresBazyField.getText();
+        Integer portBazy = Integer.parseInt(portBazyField.getText());
+        String user = userField.getText();
+        String password = passwordField.getText();
+        DanePolaczeniaBaza danePolaczeniaBaza = new DanePolaczeniaBaza(adresBazy, portBazy, user, password);
 
+        uruchomSwingWorkera(danePolaczeniaBaza);
 
 
         setVisible(true);
+    }
 
-
+    public void uruchomSwingWorkera(DanePolaczeniaBaza danePolaczeniaBaza) {
+        SwingWorkerRealTime swingWorkerRealTime = new SwingWorkerRealTime(chart, gui, danePolaczeniaBaza);
+        swingWorkerRealTime.go();
     }
 
     class UruchomSerwerButton extends JButton implements ActionListener {
@@ -90,8 +114,12 @@ public class SerwerGUI extends JFrame {
             String adresBazy = adresBazyField.getText();
             Integer portBazy = Integer.parseInt(portBazyField.getText());
             Integer portSerwera = Integer.parseInt(portNasluchuField.getText());
-            exec.execute(new Serwer(adresBazy, portBazy, portSerwera));
+            String user = userField.getText();
+            String password = passwordField.getText();
+            DanePolaczeniaBaza danePolaczeniaBaza = new DanePolaczeniaBaza(adresBazy, portBazy, user, password);
+            exec.execute(new Serwer(danePolaczeniaBaza, portSerwera));
             setText("Serwer Uruchomiony");
+            uruchomSwingWorkera(danePolaczeniaBaza);
             setEnabled(false);
         }
     }

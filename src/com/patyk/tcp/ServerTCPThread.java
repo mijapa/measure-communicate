@@ -4,6 +4,8 @@ package com.patyk.tcp;
  *
  */
 
+import com.patyk.baza.DanePolaczeniaBaza;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.Socket;
@@ -15,14 +17,16 @@ import static com.patyk.baza.MainBaza.databaseInsert;
  *
  */
 public class ServerTCPThread extends Thread {
+    DanePolaczeniaBaza danePolaczeniaBaza;
     Socket mySocket;
 
     /**
      *
      */
-    public ServerTCPThread(Socket socket) {
+    public ServerTCPThread(Socket socket, DanePolaczeniaBaza danePolaczeniaBaza) {
         super();// konstruktor klasy Thread
         mySocket = socket;
+        this.danePolaczeniaBaza = danePolaczeniaBaza;
     }
 
     public void run()// proggram wątku
@@ -43,7 +47,7 @@ public class ServerTCPThread extends Thread {
             System.out.println(mySocket.getInetAddress() + " : " + milisDate);
             mySocket.close();
             System.out.println("Watek serwera próbuje zapisac wartość do bazy danych\n");
-            databaseInsert(Integer.valueOf(id), Float.valueOf(wart), Long.valueOf(milisDate));
+            databaseInsert(Integer.valueOf(id), Float.valueOf(wart), Long.valueOf(milisDate), danePolaczeniaBaza);
         } catch (Exception e) {
             e.printStackTrace();
         }

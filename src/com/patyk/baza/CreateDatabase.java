@@ -33,15 +33,17 @@ public class CreateDatabase {
      *
      * @return referencja do uchwytu bazy danych
      */
-    public static Connection getConnection(String adres, int port) {
+    public static Connection getConnection(DanePolaczeniaBaza danePolaczeniaBaza) {
 
         Connection conn = null;
         Properties connectionProps = new Properties();
-        connectionProps.put("user", "root");
-        connectionProps.put("password", "");
+        connectionProps.put("user", danePolaczeniaBaza.getUser());
+        connectionProps.put("password", danePolaczeniaBaza.getPassword());
 
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://" + adres + ":" + port + "/",
+            conn = DriverManager.getConnection("jdbc:mysql://" +
+                            danePolaczeniaBaza.getAdresBazy() +
+                            ":" + danePolaczeniaBaza.getPortBazy() + "/",
                     connectionProps);
         } catch (SQLException e) {
             System.out.println("Brak komunikacji zwrotnej z serwera!!!");

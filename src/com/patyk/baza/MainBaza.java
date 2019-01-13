@@ -2,7 +2,6 @@ package com.patyk.baza;
 
 import java.sql.Connection;
 import java.sql.Statement;
-import java.util.Date;
 
 import static com.patyk.baza.Baza.closeConnection;
 import static com.patyk.baza.Baza.createStatement;
@@ -12,13 +11,8 @@ import static com.patyk.baza.CreateDatabase.getConnection;
 public class MainBaza {
     public static final String DATABASE_NAME = "IntDom";
 
-    public static void main(String[] args) {
-        databaseInsert(0, (float) 20.0, (new Date()).getTime());
-
-    }
-
-    public static int tryToConnectOrCreateDatabase(String adres, int port) {
-        Connection con = getConnection(adres, port);
+    public static int tryToConnectOrCreateDatabase(DanePolaczeniaBaza danePolaczeniaBaza) {
+        Connection con = getConnection(danePolaczeniaBaza);
         Statement st = createStatement(con);
         if (st != null) {
             if (executeUpdate(st, "USE " + DATABASE_NAME + ";") != -1)
@@ -62,8 +56,8 @@ public class MainBaza {
         return 0;
     }
 
-    public static int databaseInsert(Integer id, Float wartosc, Long milisDate) {
-        Connection con = getConnection("localhost", 3306);
+    public static int databaseInsert(Integer id, Float wartosc, Long milisDate, DanePolaczeniaBaza danePolaczeniaBaza) {
+        Connection con = getConnection(danePolaczeniaBaza);
         Statement st = createStatement(con);
         if (st != null) {
             //TODO opcja utworzenia bazy z parametry dostępu do serwera: ip, port

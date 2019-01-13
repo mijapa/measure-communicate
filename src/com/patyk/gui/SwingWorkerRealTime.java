@@ -1,5 +1,6 @@
 package com.patyk.gui;
 
+import com.patyk.baza.DanePolaczeniaBaza;
 import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.XYChart;
 
@@ -28,10 +29,12 @@ public class SwingWorkerRealTime {
     SwingWrapper<XYChart> sw;
     public XYChart chart;
     private SerwerGUI serwerGUI;
+    private DanePolaczeniaBaza danePolaczeniaBaza;
 
-    public SwingWorkerRealTime(XYChart chart, SerwerGUI serwerGUI) {
+    public SwingWorkerRealTime(XYChart chart, SerwerGUI serwerGUI, DanePolaczeniaBaza danePolaczeniaBaza) {
         this.chart = chart;
         this.serwerGUI = serwerGUI;
+        this.danePolaczeniaBaza = danePolaczeniaBaza;
     }
 
 
@@ -49,7 +52,12 @@ public class SwingWorkerRealTime {
             System.exit(1);
         }
 
-        connection = connectToDatabase("localhost:3306", "IntDom", "root", "");
+        connection = connectToDatabase(
+                danePolaczeniaBaza.getAdresBazy() + ":" + danePolaczeniaBaza.getPortBazy(),
+                "IntDom",
+                danePolaczeniaBaza.getUser(),
+                danePolaczeniaBaza.getPassword());
+//        connection = connectToDatabase("localhost:3306", "IntDom", "root", "");
         s = createStatement(connection);
 
         // WYKONYWANIE OPERACJI NA BAZIE DANYCH
@@ -100,7 +108,7 @@ public class SwingWorkerRealTime {
                 }
                 CzujnikiData data = new CzujnikiData(xyData);
                 fifo.add(data);
-                if (fifo.size() > 5000) {
+                if (fifo.size() > 1000) {
                     fifo.removeFirst();
                 }
 

@@ -18,18 +18,15 @@ public class Klient implements Callable<Double> {
     private String adresSerwera;
     private Integer portSerwera;
 
-    public Klient() {
-        ID = nextID++;
-    }
-
     public Klient(String adresSerwera, Integer portSerwera) {
+        ID = nextID++;
         this.adresSerwera = adresSerwera;
         this.portSerwera = portSerwera;
 
     }
 
     public static void main(String[] args) {
-        Klient kl = new Klient();
+        Klient kl = new Klient("localhost", 8080);
         try {
             kl.call();
         } catch (Exception e) {

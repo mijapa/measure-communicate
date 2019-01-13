@@ -1,21 +1,16 @@
 package com.patyk;
 
+import com.patyk.baza.DanePolaczeniaBaza;
+
 import static com.patyk.tcp.ServerTCP.uruchomSerwer;
 
 public class Serwer implements Runnable {
-    private final Integer portBazy;
     private final Integer portSerwera;
-    private String adresBazy;
+    private final DanePolaczeniaBaza danePolaczeniaBaza;
 
-    public Serwer(String adresBazy, Integer portBazy, Integer portSerwera) {
-        this.adresBazy = adresBazy;
-        this.portBazy = portBazy;
+    public Serwer(DanePolaczeniaBaza danePolaczeniaBaza, Integer portSerwera) {
+        this.danePolaczeniaBaza = danePolaczeniaBaza;
         this.portSerwera = portSerwera;
-    }
-
-    public static void main(String[] args) {
-        Serwer serwer = new Serwer("localhost", 3306, 8080);
-        serwer.run();
     }
 
     @Override
@@ -23,6 +18,6 @@ public class Serwer implements Runnable {
 //        TODO jak przekazać parametry do wątku??
         System.out.println("Uruchamiam serwer");
 
-        uruchomSerwer(adresBazy, portBazy, portSerwera);
+        uruchomSerwer(danePolaczeniaBaza, portSerwera);
     }
 }
