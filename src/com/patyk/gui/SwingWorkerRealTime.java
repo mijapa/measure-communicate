@@ -43,7 +43,7 @@ public class SwingWorkerRealTime {
         else {
             System.exit(1);
         }
-
+//        tryToConnectOrCreateDatabase(danePolaczeniaBaza);
         connection = connectToDatabase(
                 danePolaczeniaBaza.getAdresBazy() + ":" + danePolaczeniaBaza.getPortBazy(),
                 DATABASE_NAME,
