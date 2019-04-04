@@ -1,2 +1,2 @@
 # measure-communicate
-Java programming student project
+Smart Measure - Java programming student project
